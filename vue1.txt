@@ -1,0 +1,63 @@
+Vue.js是什么？  (案例demo1)
+
+   vue.js是一套构建用户界面的渐进式框架。与其他重量级框架不同的是，Vue采用自底向上增量开发的设计。
+   vue的核心库只关注视图层,它不仅易于上手,还便于与第三方库或既有项目整合。另一方面,当与单文件组件
+   和Vue生态系统支持的库结合使用时,Vue也完全能够为复杂的单页面应用程序提供驱动。
+
+
+v-bind
+   v-bind:属性名=属性值
+
+v-on 简写方式 @
+   v-on:事件名=执行方法
+
+在视图中输入值
+  {{ 变量名 }}
+
+一个实例就是生命体
+
+   el:花在元素, 决定当前vue的控制范围
+   data:对象
+   computed:计算属性
+   methods:方法的集合
+   filetes:过滤器
+   component:组件
+   watch:监听数据变化
+   template:模板
+
+
+
+   生命周期:
+       beforeCreate 创建之前
+       created 创建完成 (关联数据,初始化事件)
+       beforeMount dom生成之前
+       mounted dom生成
+       (beforeUpdate updated)  如果数据更新了,则会触发update生命周期
+       一般配合路由
+       beforeDestroy
+       destroyed
+
+       操作数据在created里面
+       操作dom在mounted
+       数据更新再加一些某些操作就在updated里面
+
+
+什么是组件？(与angular的自定义指令很相似)
+       组件是Vue.js最强大的功能之一。组件可以扩展HTML元素,封装可重用的代码。在较高层面上,
+       组件是自定义元素,Vue.js的编译器为它添加特殊功能。在有些情况下,组件也可以是原生HTML
+       元素的形成,以is特性扩展。
+
+       vue组件特征:
+            基本同Vue实例一样
+            还有
+                props:数组、对象 [],{属性名:String}
+                data:function(){
+                  return {
+
+                  }
+局部组件:只有当前的实例的可以用。
+         1)在组件里面data必须是函数
+
+
+computedhe
+

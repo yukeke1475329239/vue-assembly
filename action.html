@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<script src="../libs/vue.min.js"></script>
+<script src="../libs/vuex.js"></script>
+<script>
+    const store = new Vuex.Store({
+        state: {
+            count: 4
+        },
+        mutations: {
+            increment2 (state) {
+            state.count++
+            console.log(state.count)
+        }
+      },
+        actions: {
+            increment (context) {
+                context.commit('increment2')
+            }
+        }
+    })
+    store.dispatch('increment')
+</script>
+</body>
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title></title>
+
+</head>
+<body>
+<div class="box">
+    <app-el v-bind:tname="name" v-bind:tage="age">
+        <p slot="num1">{{data}}</p>
+       <ol slot="num2">
+           <li v-for="v in arr">{{v}}</li>
+       </ol>
+    </app-el>
+    <test-app v-on:aa="num"></test-app>
+    <test-list></test-list>
+</div>
+<script type="text/x-template" id="list">
+  <ul>
+      <li v-for="(a,b,index) in arr">{{a}}{{b}}{{index}}</li>
+  </ul>
+</script>
+
+<script src="../libs/vue.min.js"></script>
+<script>
+    <!-- slot 分发  把父组件的dom结构传给子组件-->
+    var eventBus=new Vue()
+    Vue.component("app-el",{//全局组件
+        props:{//父作用域向子组件传递数据   <app-el v-bind:tname="name" v-bind:tage="age"></app-el>
+            tname:{
+                type:String,
+                required:true
+            },
+            tage:{
+                type:[Number,String],
+                required:true
+            }
+        },
+        template:`<div>
+                    <h1>{{tname}}</h1>
+                    <slot name="num2"></slot>
+                    <h2>{{tage}}</h2>
+                     <slot name="num1"></slot>
+                  </div>`
+    })
+    var vm= new Vue({
+        el:".box",
+        data:{
+            name:"一片冰心在玉壶",
+            age:22,
+            data:"杰米扬鱼汤",
+            arr:["哪有那么多时光用来说","我不会","我害怕","我不行","用尽全力去做你想做的事","去爱你想爱的人","去成为你想成为的自己"]
+        },
+        methods:{
+            num:function(num){
+                console.log(num)
+            }
+        },
+        components:{
+            "test-app":{
+               data:function(){
+                   return {
+                       name:"岁月静好"
+                   }
+               },
+             template:`<h2>{{name}}</h2>`,
+             mounted:function(){
+                 this.$emit("aa",3)//子组件向父组件传<test-app v-on:aa="num"></test-app>
+                                   //在父组件创建num函数就可以了(监听事件必须写在子组件上)
+                 eventBus.$on("bb",(data)=>{
+                     console.log(data)
+                 })
+                 eventBus.$emit("ff","bbbb")
+             }
+            },
+            "test-list":{
+                data:function(){
+                    return {
+                        arr:["a","b","c"]
+                    }
+                },
+                template:"#list",
+                mounted:function(){
+                    eventBus.$emit("bb","aaaa")
+                    eventBus.$on("ff",(w)=>{
+                        console.log(w)
+                    })
+
+                }
+            }
+        }
+    })
+
+</script>
+</body>
+</html>

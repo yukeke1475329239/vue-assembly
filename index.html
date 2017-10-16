@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div class="box">
+      <app-el v-bind:tname="name" v-bind:tage="age"></app-el>
+      <app-el2 v-bind:tname="name" v-bind:tage="age"></app-el2>
+       <h1>{{falg}}</h1>
+       <button v-on:click="add">点击</button>
+       <test-app></test-app> 
+      
+    </div>
+    <script src="../libs/vue.min.js"></script>
+    <script>
+    Vue.component("app-el2",{
+        props:{
+            tname:{
+                type:String,
+                required:true
+            },
+            tage:{
+                type:[Number,String],
+                required:true
+            }
+        },
+            template:`<div>
+                    <p>{{tname}}</p>
+                   
+                    <p>{{tage}}</p>
+                   
+                  </div>`
+
+    })
+    Vue.component("app-el",{//全局组件
+        props:{//父作用域向子组件传递数据   <app-el v-bind:tname="name" v-bind:tage="age"></app-el>
+            tname:{
+                type:String,
+                required:true
+            },
+            tage:{
+                type:[Number,String],
+                required:true
+            }
+        },
+        template:`<div>
+                    <h1>{{tname}}</h1>
+                   
+                    <h2>{{tage}}</h2>
+                    
+                  </div>`
+    })
+       var vm=new Vue({
+           el:".box",
+           data:{
+               falg:"yukeke",
+               name:"一片冰心在玉壶",
+               age:22
+           },
+           methods:{
+               add:function(){
+                  alert(1)
+               }
+           },
+           components:{
+               "test-app":{
+                   data:function(){
+                       return {
+                           name3:"加油"
+                       }
+                   },
+                   template:`<h2>{{name3}}</h2>`,
+                   mounted:function(){
+
+                   }
+               }
+           }
+       })
+
+
+
+    </script>
+</body>
+</html>

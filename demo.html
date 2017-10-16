@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<div class="box">
+    <h1>{{count}}</h1>
+    <h2>{{$store.state.count}}</h2>
+    <h3>{{count2()}}</h3>
+    <button v-on:click="add">加</button>
+    <button v-on:click="remove">减</button>
+</div>
+<script src="../libs/vue.min.js"></script>
+<script src="../libs/vuex.js"></script>
+<script>
+    let store=new Vuex.Store({
+//        原始存储数据容器 (state:对象)
+        state:{
+            count:1,
+            arr:[1,2,3,4,5,6]
+        },
+//        用于操作原始数据state
+        mutations:{//通过commit提交
+            aa:function(state,num){
+                state.count+=num
+            },
+            bb:function(state,sum){
+                state.count-=sum
+            }
+        },
+//        actions:用于触发mutations
+        actions:{//context的副本
+            increment3:function(context,num){
+              console.log(num)
+                context.commit("aa",num)
+            }
+        },
+        getters:{
+            odd:function(state){
+                let tmp_arr=[];
+                for(var i=0;i<state.arr.length;i++){
+                    if(state.arr[i]%2==0){
+                        tmp_arr.push(state.arr[i])
+                    }
+                }
+                return tmp_arr
+            }
+        }
+    })
+    new Vue({
+        el:".box",
+        store:store,
+        computed:{
+            count:function(){
+                return store.state.count
+            }
+        },
+        methods:{
+            add:function(){
+                //this.$store.commit("aa")
+//                setTimeout(()=>{
+//                    store.dispatch("increment3",10)
+//                },1000)
+                console.log(store.getters.odd)
+            },
+            remove:function(){
+                this.$store.commit("bb",5)
+            },
+            count2:function(){
+                return store.state.count
+            }
+        }
+    })
+
+</script>
+</body>
+</html>

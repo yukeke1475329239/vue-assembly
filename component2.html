@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<div class="box">
+    <h1 v-on:click="say">{{name}}</h1>
+    <app-popm :Tarr="arr"></app-popm>
+    <app-popm :Tarr="arr2"></app-popm>
+    <render-app :arr3="arr3"></render-app>
+    <render-song :ss="song" v-on:to-parent="sayName"></render-song>
+</div>
+<div class="box2">
+    <app-popm :Tarr="arr"></app-popm>
+</div>
+<script src="../libs/vue.min.js"></script>
+<script>
+    var Bus=new Vue()
+    Vue.component("app-popm",{
+        props:{
+            Tarr:{
+                type:Array,
+                required:true
+            }
+        },
+        template:` <ol>
+                        <li v-for="a in Tarr">{{a}}</li>
+                    </ol>`,
+        mounted:function(){
+            console.log(this.Tarr)
+        }
+    })
+    var vm=new Vue({
+        el:".box",
+        data:{
+            arr:["只要用心经营","你的软肋","终将成为你的铠甲"],
+            arr2:["若有才华藏心间","岁月从不败美人"],
+            arr3:["花开花落终有时","人来人往皆不遇"],
+            song:[
+                {
+                    name:"《明月几时有》",
+                    list:"把酒问青天"
+                },
+                {
+                    name:"《凉凉》",
+                    list:"入夜渐微凉"
+                },
+                {
+                    name:"《美人鱼》",
+                    list:"听说"
+                }
+            ],
+            name:""
+        },
+        methods:{
+            sayName:function(el){
+                this.name=el
+            },
+            say:function(){
+              Bus.$emit("xing",this.arr2)
+            }
+        },
+        components:{
+            "render-app":{
+                props:{
+                    arr3:{
+                        type:Array,
+                        required:true
+                    }
+                },
+                template:`<ul>
+                            <li v-for="z in arr3">{{z}}</li>
+                          </ul>`
+            },
+            "render-song":{
+                props:["ss"],
+                template:`<ul>
+                            <li v-for="d in ss" v-on:click="getName(d.name)">{{d.list}}</li>
+                          </ul>`,
+                methods:{
+                    getName:function(el){
+                       this.$emit("to-parent",el)
+                    }
+                }
+            }
+        }
+    })
+new Vue({
+    el:".box2",
+    data:{
+        arr:["你是爱","是暖","是希望","你是人间四月天"]
+    },
+    mounted:function(){
+        Bus.$on("xing",(data)=>{
+                 this.arr=data
+        })
+    }
+
+})
+
+
+</script>
+</body>
+</html>
